@@ -71,16 +71,13 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center text-white p-4">
     <div class="max-w-2xl w-full text-center mx-4">
-        <!-- Logo với animation -->
         <div class="mb-8 transform hover:scale-105 transition duration-500">
             <h1 class="text-4xl md:text-6xl font-bold mb-2 logo-text">Furina<span class="text-white">OJ</span></h1>
             <p class="text-lg md:text-xl text-gray-200 font-light">Furina Online Judge</p>
         </div>
         
-        <!-- Thông báo lỗi 523 -->
         <div class="error-box rounded-xl p-6 md:p-8 mb-8">
             <div class="flex justify-center mb-6">
-                <!-- Icon lỗi kết nối (fixed SVG path) -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 md:h-16 md:w-16 text-red-400 pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h.01M8.111 16.404A5.5 5.5 0 0 1 12 15a5.5 5.5 0 0 1 3.889 1.404M4.929 12.071A8 8 0 0 1 12 8a8 8 0 0 1 7.071 4.071M1.394 9.393A12 12 0 0 1 12 4a12 12 0 0 1 10.606 5.393" />
                 </svg>
@@ -93,16 +90,14 @@
                 Hình như máy chủ của chúng mình đang gặp một sự cố gì rồi 😓. Đừng lo, bạn chỉ cần thử lại sau vài phút hoặc liên hệ với chúng mình để được hỗ trợ nhé!
             </p>
             
-            <!-- Thông tin chi tiết lỗi -->
             <div class="bg-black/20 rounded-lg p-4 text-left mb-6 text-sm font-mono text-gray-200">
                 <p><span class="text-blue-400">Ray ID:</span> 7a8b9c0d1e2f3g4h • <span id="current-time"></span></p>
-                <p><span class="text-blue-400">Máy chủ:</span> FurinaOJ ST (Sóc Trăng, Việt Nam)</p>
+                <p><span class="text-blue-400">Máy chủ:</span> FurinaOJ-Server-1 (Sóc Trăng, Việt Nam)</p>
                 <p><span class="text-blue-400">Địa chỉ IP:</span> <span id="user-ip">Đang tải...</span></p>
                 <p><span class="text-blue-400">Nhà cung cấp:</span> <span id="isp-info">Đang tải...</span></p>
                 <p><span class="text-blue-400">Vị trí:</span> <span id="location-info">Đang tải...</span></p>
             </div>
             
-            <!-- Nút thử lại -->
             <button onclick="window.location.href='https://furinaoj.io.vn'" class="retry-button text-white font-medium py-2 px-6 rounded-lg flex items-center justify-center mx-auto">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -111,7 +106,6 @@
             </button>
         </div>
         
-        <!-- Thông tin liên hệ -->
         <div class="text-gray-300 text-sm md:text-base font-light">
             <p class="mb-2">Website chính thức: <a href="https://furinaoj.io.vn" class="text-blue-400 hover:text-blue-300 transition underline">furinaoj.io.vn</a></p>
             <p>Hỗ trợ kỹ thuật: <a href="mailto:furinaoj@gmail.com" class="text-blue-400 hover:text-blue-300 transition">furinaoj@gmail.com</a></p>
@@ -119,7 +113,6 @@
         </div>
     </div>
 
-    <!-- Animation background particles -->
     <div class="fixed inset-0 overflow-hidden -z-10">
         <div class="absolute top-0 left-0 w-full h-full">
             <div class="particle" style="top: 20%; left: 10%; width: 4px; height: 4px;"></div>
@@ -141,7 +134,6 @@
     </style>
 
     <script>
-        // Hiển thị thời gian hiện tại
         document.getElementById('current-time').textContent = new Date().toLocaleString('vi-VN', {
             day: '2-digit',
             month: '2-digit',
@@ -150,8 +142,6 @@
             minute: '2-digit',
             second: '2-digit'
         });
-
-        // Lấy thông tin IP (sử dụng API ipify)
         document.getElementById('user-ip').textContent = 'Đang tải...';
         document.getElementById('isp-info').textContent = 'Đang tải...';
         document.getElementById('location-info').textContent = 'Đang tải...';
@@ -159,8 +149,7 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById('user-ip').textContent = data.ip;
-                // Lấy thông tin ISP và vị trí (sử dụng API ipinfo.io)
-                const apiKey = '402381c0a34923'; // Thay bằng API key của bạn từ https://ipinfo.io/signup
+                const apiKey = '402381c0a34923';
                 return fetch(`https://ipinfo.io/${data.ip}/json?token=${apiKey}`);
             })
             .then(response => response.json())
@@ -176,8 +165,6 @@
                 document.getElementById('isp-info').textContent = 'Không xác định';
                 document.getElementById('location-info').textContent = 'Không xác định';
             });
-
-        // Thêm animation cho các particle
         document.querySelectorAll('.particle').forEach((el, index) => {
             const duration = Math.random() * 10 + 10;
             const delay = Math.random() * 5;
