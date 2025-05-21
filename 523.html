@@ -80,9 +80,9 @@
         <!-- Thông báo lỗi 523 -->
         <div class="error-box rounded-xl p-6 md:p-8 mb-8">
             <div class="flex justify-center mb-6">
-                <!-- Icon lỗi kết nối -->
+                <!-- Icon lỗi kết nối (fixed SVG path) -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 md:h-16 md:w-16 text-red-400 pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h.01M8.111 16.404A5.5 5.5 0 0 1 12 15a5.5 5.5 0 0 1 3.889 1.404M4.929 12.071A8 8 0 0 1 12 8a8 8 0 0 1 7.071 4.071M1.394 9.393A12 12 0 0 1 12 4a12 12 0 0 1 10.606 5.393" />
                 </svg>
             </div>
             <h2 class="text-2xl md:text-3xl font-bold mb-2">Ôi, có gì đó không ổn rồi!</h2>
@@ -90,15 +90,16 @@
                 <p class="text-red-300 font-mono">Lỗi 523: Không kết nối được với máy chủ</p>
             </div>
             <p class="text-base md:text-lg text-gray-200 mb-6 font-light">
-                Hình như bạn không thể kết nối với máy chủ ngay bây giờ. Đừng lo, bạn chỉ cần thử lại sau vài phút hoặc liên hệ với chúng mình để được hỗ trợ nhé!
+                Hình như máy chủ của chúng mình đang gặp một sự cố gì rồi 😓. Đừng lo, bạn chỉ cần thử lại sau vài phút hoặc liên hệ với chúng mình để được hỗ trợ nhé!
             </p>
             
             <!-- Thông tin chi tiết lỗi -->
             <div class="bg-black/20 rounded-lg p-4 text-left mb-6 text-sm font-mono text-gray-200">
                 <p><span class="text-blue-400">Ray ID:</span> 7a8b9c0d1e2f3g4h • <span id="current-time"></span></p>
                 <p><span class="text-blue-400">Máy chủ:</span> FurinaOJ ST (Sóc Trăng, Việt Nam)</p>
-                <p><span class="text-blue-400">Địa chỉ IP:</span> <span id="user-ip">Đang xác định...</span></p>
-                <p><span class="text-blue-400">Nhà cung cấp:</span> <span id="isp-info">Đang xác định...</span></p>
+                <p><span class="text-blue-400">Địa chỉ IP:</span> <span id="user-ip">Đang tải...</span></p>
+                <p><span class="text-blue-400">Nhà cung cấp:</span> <span id="isp-info">Đang tải...</span></p>
+                <p><span class="text-blue-400">Vị trí:</span> <span id="location-info">Đang tải...</span></p>
             </div>
             
             <!-- Nút thử lại -->
@@ -153,20 +154,27 @@
         // Lấy thông tin IP (sử dụng API ipify)
         document.getElementById('user-ip').textContent = 'Đang tải...';
         document.getElementById('isp-info').textContent = 'Đang tải...';
+        document.getElementById('location-info').textContent = 'Đang tải...';
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('user-ip').textContent = data.ip;
-                // Lấy thông tin ISP (sử dụng API ip-api.com)
-                return fetch(`http://ip-api.com/json/${data.ip}`);
+                // Lấy thông tin ISP và vị trí (sử dụng API ipinfo.io)
+                const apiKey = '402381c0a34923'; // Thay bằng API key của bạn từ https://ipinfo.io/signup
+                return fetch(`https://ipinfo.io/${data.ip}/json?token=${apiKey}`);
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('isp-info').textContent = data.isp || 'Không xác định';
+                document.getElementById('isp-info').textContent = data.org || 'Không xác định';
+                document.getElementById('location-info').textContent = 
+                    data.city && data.country 
+                        ? `${data.city}, ${data.country}` 
+                        : 'Không xác định';
             })
             .catch(() => {
                 document.getElementById('user-ip').textContent = 'Không xác định';
                 document.getElementById('isp-info').textContent = 'Không xác định';
+                document.getElementById('location-info').textContent = 'Không xác định';
             });
 
         // Thêm animation cho các particle
